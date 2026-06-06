@@ -1,8 +1,7 @@
-customtkinter
-mss
-opencv-python
-numpy
-pydirectinput
-pillow
-keyboard
-pyjson5
+customtkinter>=5.2.0
+mss>=9.0.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+pydirectinput>=1.0.4
+pillow>=10.0.0
+keyboard>=0.13.5

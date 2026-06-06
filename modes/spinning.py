@@ -15,8 +15,5 @@ class SpinningFishing(FishingMode):
     def execute_cycle(self):
         self.logger.info("Spinning cycle")
     
-    def on_bite_detected(self):
-        self.logger.info("Bite detected in spinning mode")
-    
     def cleanup(self):
         self.logger.info("Spinning fishing stopped")

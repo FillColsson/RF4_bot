@@ -15,8 +15,5 @@ class BottomFishing(FishingMode):
     def execute_cycle(self):
         self.logger.info("Bottom fishing cycle")
     
-    def on_bite_detected(self):
-        self.logger.info("Bite detected in bottom mode")
-    
     def cleanup(self):
         self.logger.info("Bottom fishing stopped")

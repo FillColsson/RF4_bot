@@ -165,11 +165,6 @@ class FloatFishing(FishingMode):
                 self.logger.info(f"Bite detected! Methods: {bite_result['methods']}")
                 self.bite_detected = True
     
-    def on_bite_detected(self):
-        """Handle bite detection"""
-        self.logger.info("Processing bite...")
-        self.input.press('space', duration=0.1)
-    
     def _start_cast(self):
         """Start casting"""
         self.logger.info(f"Casting #{self.cast_count + 1}")

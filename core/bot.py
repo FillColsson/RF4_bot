@@ -76,9 +76,9 @@ class RF4Bot:
     def update_config(self, config):
         """Update bot configuration"""
         self.config = config
+        self.vision.config = config
         if self.current_mode:
             self.current_mode.config = config
-        self.vision.setup_detector(config.get("detector_type", "hybrid"))
         self.logger.info("Config updated")
     
     def _run(self):

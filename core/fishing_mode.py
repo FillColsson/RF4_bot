@@ -28,11 +28,6 @@ class FishingMode(ABC):
         pass
     
     @abstractmethod
-    def on_bite_detected(self):
-        """Handle bite detection"""
-        pass
-    
-    @abstractmethod
     def cleanup(self):
         """Cleanup when fishing stops"""
         pass
