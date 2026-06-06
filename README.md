@@ -33,6 +33,8 @@
 ```bash
 cd RF4_Bot
 pip install -r requirements.txt
+copy config.example.json config.json   # Windows
+# cp config.example.json config.json  # Linux/Mac
 python main.py
 ```
 
@@ -42,7 +44,7 @@ python main.py
 RF4_Bot/
 ├── main.py                      # Точка входа приложения
 ├── gui.py                       # GUI интерфейс (CustomTkinter)
-├── config.json                  # Конфигурация бота
+├── config.example.json          # Пример конфигурации (скопируй в config.json)
 ├── test_float_detection.py      # Демо распознавания поплавка
 │
 ├── core/
@@ -51,9 +53,10 @@ RF4_Bot/
 │   └── fishing_mode.py         # Базовый класс для режимов ловли
 │
 ├── vision/
-│   ├── vision_engine.py        # Основной модуль захвата и обработки видео
-│   ├── float_detectors.py      # Специализированные детекторы поплавка
-│   └── detectors.py            # Базовые детекторы поклёвки
+│   ├── vision_engine.py        # Захват экрана и обработка кадров
+│   ├── float_detectors.py      # Детекторы поплавка и поклёвки
+│   ├── advanced_detectors.py   # Template matching, multi-HSV, adaptive
+│   └── detectors.py            # Базовые детекторы (для будущих режимов)
 │
 ├── modes/
 │   ├── float_fishing.py        # Режим поплавочной ловли (ГОТОВО)
@@ -65,7 +68,9 @@ RF4_Bot/
 │
 ├── utils/
 │   ├── logger.py               # Система логирования
-│   └── screen_selector.py      # Инструмент выбора области на экране
+│   ├── overlay.py              # Оверлей статуса бота
+│   ├── screen_selector.py      # Выбор области (Tkinter)
+│   └── simple_screen_selector.py  # Выбор области (OpenCV)
 │
 └── logs/
     └── bot_*.log               # Логи работы бота
@@ -91,7 +96,7 @@ RF4_Bot/
   },
   "auto_hook": true,                   # Автоподсечка
   "auto_collect": true,                # Автосбор рыбы
-  "detector_type": "hybrid",           # Тип детектора (hybrid, brightness, motion)
+  "float_detection_method": "hybrid",  # hybrid, template_matching, multi_hsv, adaptive
   "hotkey_start": "f6",                # Горячая клавиша запуска
   "hotkey_stop": "f7"                  # Горячая клавиша остановки
 }
@@ -167,9 +172,6 @@ class NewFishing(FishingMode):
     def execute_cycle(self):
         # Основной цикл ловли
         pass
-        
-    def on_bite_detected(self):
-        self.logger.info("Bite!")
         
     def cleanup(self):
         self.logger.info("Cleanup...")

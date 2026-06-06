@@ -1,0 +1,26 @@
+{
+    "resolution": "1920x1080",
+    "fishing_mode": "float",
+    "float_color": "red",
+    "cast_power": 75,
+    "cast_delay": 1.2,
+    "bite_detection_sensitivity": 65,
+    "detection_region": {
+        "x": 850,
+        "y": 350,
+        "width": 450,
+        "height": 380
+    },
+    "auto_hook": true,
+    "auto_collect": true,
+    "auto_repair": true,
+    "float_detection_method": "hybrid",
+    "hotkey_start": "f6",
+    "hotkey_stop": "f7",
+    "advanced_settings": {
+        "enable_template_matching": false,
+        "template_path": "float_samples/_template.png",
+        "multi_hsv_ranges": null,
+        "enable_adaptive_detection": false
+    }
+}

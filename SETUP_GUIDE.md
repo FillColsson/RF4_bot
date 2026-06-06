@@ -135,7 +135,7 @@ python test_float_detection.py
 
 2. **Используй детектор motion:**
    ```json
-   "detector_type": "motion"
+   "float_detection_method": "hybrid"
    ```
 
 3. **Включи дебаг:**
@@ -157,7 +157,7 @@ python test_float_detection.py
 
 2. **Использовать более быстрый детектор:**
    ```json
-   "detector_type": "brightness"  // вместо "hybrid"
+   "float_detection_method": "template_matching"
    ```
 
 3. **Уменьшить частоту обработки в режиме ожидания:**
@@ -170,7 +170,7 @@ python test_float_detection.py
 
 1. **Отключить optical flow:**
    ```json
-   "detector_type": "brightness"
+   "float_detection_method": "template_matching"
    ```
 
 2. **Уменьшить область:**
@@ -252,7 +252,7 @@ python test_float_detection.py
   "bite_detection_sensitivity": 85,
   "cast_power": 55,
   "cast_delay": 0.8,
-  "detector_type": "motion"
+  "float_detection_method": "hybrid"
 }
 ```
 
