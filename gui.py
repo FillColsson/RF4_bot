@@ -1,14 +1,14 @@
 import customtkinter as ctk
 from tkinter import messagebox, scrolledtext
-import keyboard
-from utils.screen_selector import ScreenSelector
 
 
 class RF4BotGUI:
-    def __init__(self, root, config, save_callback):
+    def __init__(self, root, config, save_callback, start_callback=None, stop_callback=None):
         self.root = root
         self.config = config
         self.save_callback = save_callback
+        self.start_callback = start_callback
+        self.stop_callback = stop_callback
         self.status_label = None
         self.log_text = None
         self.build_ui()
@@ -119,6 +119,11 @@ class RF4BotGUI:
             self.log_text.insert("end", f"{message}\n")
             self.log_text.see("end")
             self.root.update()
+
+    def set_control_callbacks(self, start_callback, stop_callback):
+        """Wire GUI buttons to bot start/stop handlers"""
+        self.start_callback = start_callback
+        self.stop_callback = stop_callback
     
     def select_region(self):
         """Open screen selector with choice of method"""
@@ -190,7 +195,13 @@ class RF4BotGUI:
             messagebox.showerror("Ошибка", f"Ошибка при сохранении:\n{e}")
 
     def start_bot(self):
-        messagebox.showinfo("Запуск", "Бот запущен!\n\nПереключись в игру\nНажми F6 для старта")
+        if self.start_callback:
+            self.start_callback()
+        else:
+            messagebox.showinfo("Запуск", "Нажми F6 для старта бота")
 
     def stop_bot(self):
-        messagebox.showinfo("Стоп", "Бот остановлен")
+        if self.stop_callback:
+            self.stop_callback()
+        else:
+            messagebox.showinfo("Стоп", "Нажми F7 для остановки бота")

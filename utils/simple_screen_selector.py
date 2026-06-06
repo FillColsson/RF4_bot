@@ -30,18 +30,9 @@ class SimpleScreenSelector:
         monitor = sct.monitors[1]
         screenshot = sct.grab(monitor)
         
-        # Конвертируем в OpenCV формат
+        # Конвертируем в OpenCV формат (без масштабирования!)
         frame = np.array(screenshot)
         frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2BGR)
-        
-        # Масштабируем если слишком большой
-        height, width = frame.shape[:2]
-        scale = 1.0
-        if width > 1920 or height > 1080:
-            scale = min(1920 / width, 1080 / height)
-            new_width = int(width * scale)
-            new_height = int(height * scale)
-            frame = cv2.resize(frame, (new_width, new_height))
         
         self.frame = frame.copy()
         self.original_frame = frame.copy()
@@ -127,35 +118,28 @@ class SimpleScreenSelector:
             if self.drawing:
                 self.drawing = False
                 
-                # Сохраняем выделение
-                x1 = min(self.start_x, x)
-                y1 = min(self.start_y, y)
-                x2 = max(self.start_x, x)
-                y2 = max(self.start_y, y)
+                # Сохраняем выделение (в оригинальных координатах)
+                x1 = min(self.start_x, self.current_x)
+                y1 = min(self.start_y, self.current_y)
+                x2 = max(self.start_x, self.current_x)
+                y2 = max(self.start_y, self.current_y)
                 
                 width = x2 - x1
                 height = y2 - y1
                 
                 if width >= 20 and height >= 20:
                     self.selection = {
-                        "x": int(x1 / self.get_scale()),
-                        "y": int(y1 / self.get_scale()),
-                        "width": int(width / self.get_scale()),
-                        "height": int(height / self.get_scale())
+                        "x": x1,
+                        "y": y1,
+                        "width": width,
+                        "height": height
                     }
                     
                     print(f"✓ Область выбрана: {self.selection}")
                     print("  Нажми SPACE для сохранения или ESC для отмены")
                 else:
                     print("⚠️  Область слишком маленькая! Минимум 20x20 пикселей")
-    
-    def get_scale(self):
-        """Get current scale factor"""
-        sct = mss.mss()
-        monitor = sct.monitors[1]
-        orig_height = monitor.height
-        current_height = self.frame.shape[0]
-        return current_height / orig_height if current_height > 0 else 1.0
+                    self.selection = None
 
 
 # Функция-обёртка для совместимости

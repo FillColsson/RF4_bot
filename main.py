@@ -22,6 +22,7 @@ class RF4BotApp:
         self.gui = RF4BotGUI(self.root, self.config, self.save_config)
         
         self.bot = RF4Bot(self.config, self.gui)
+        self.gui.set_control_callbacks(self.start_bot, self.stop_bot)
         self.overlay = None
         self.hotkeys_registered = False
         
