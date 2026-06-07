@@ -84,6 +84,8 @@ class RF4BotApp:
             "fishing_mode": "float",
             "float_color": "red",
             "cast_power": 75,
+            "cast_hold_min": 0.15,
+            "cast_hold_max": 2.5,
             "cast_delay": 1.2,
             "bite_detection_sensitivity": 65,
             "detection_region": {"x": 850, "y": 350, "width": 450, "height": 380},
@@ -93,6 +95,17 @@ class RF4BotApp:
             "float_detection_method": "hybrid",
             "hotkey_start": "f6",
             "hotkey_stop": "f7",
+            "vision": {
+                "float_stable_frames": 5,
+                "float_missing_frames_for_fight": 4,
+                "bite_cooldown_sec": 2.0,
+                "catch_screen_threshold": 0.55,
+                "catch_edge_ratio": 0.82,
+                "catch_samples_dir": "catch_samples",
+                "max_cast_wait_sec": 20,
+                "max_wait_sec": 300,
+                "max_fight_sec": 120
+            },
             "advanced_settings": {
                 "enable_template_matching": False,
                 "template_path": "float_samples/_template.png"

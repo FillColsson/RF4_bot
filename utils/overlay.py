@@ -39,10 +39,12 @@ class BotOverlay:
                     
                     # Получаем информацию о боте
                     bot_state = self.bot.current_mode.state_machine.get_current_state() if self.bot.current_mode else None
-                    cast_count = self.bot.current_mode.cast_count if self.bot.current_mode else 0
+                    status = self.bot.current_mode.get_status() if self.bot.current_mode else {}
+                    cast_count = status.get("casts", getattr(self.bot.current_mode, "cast_count", 0))
+                    catch_count = status.get("catches", 0)
+                    vision_phase = status.get("vision_phase", "—")
                     
-                    # Рисуем информацию
-                    self._draw_status(overlay_frame, bot_state, cast_count)
+                    self._draw_status(overlay_frame, bot_state, cast_count, catch_count, vision_phase)
                     
                     # Показываем оверлей
                     cv2.imshow(self.window_name, overlay_frame)
@@ -60,39 +62,37 @@ class BotOverlay:
         finally:
             self.stop()
     
-    def _draw_status(self, frame, state, cast_count):
+    def _draw_status(self, frame, state, cast_count, catch_count=0, vision_phase="—"):
         """Draw bot status on frame"""
         
-        # Заголовок
         cv2.putText(
-            frame, "🎣 RF4 AutoFisher", (10, 30),
-            cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2
+            frame, "RF4 AutoFisher", (10, 28),
+            cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2
         )
         
-        # Статус
-        status_text = f"Status: {state.name if state else 'IDLE'}"
+        status_text = f"Bot: {state.name if state else 'IDLE'}"
         status_color = self._get_status_color(state)
         cv2.putText(
-            frame, status_text, (10, 65),
-            cv2.FONT_HERSHEY_SIMPLEX, 0.8, status_color, 2
+            frame, status_text, (10, 58),
+            cv2.FONT_HERSHEY_SIMPLEX, 0.65, status_color, 2
         )
-        
-        # Забросы
-        casts_text = f"Casts: {cast_count}"
+
         cv2.putText(
-            frame, casts_text, (10, 100),
-            cv2.FONT_HERSHEY_SIMPLEX, 0.8, (200, 200, 200), 1
+            frame, f"Vision: {vision_phase}", (10, 82),
+            cv2.FONT_HERSHEY_SIMPLEX, 0.55, (180, 220, 255), 1
         )
         
-        # Время работы
+        cv2.putText(
+            frame, f"Casts: {cast_count}  Catches: {catch_count}", (10, 108),
+            cv2.FONT_HERSHEY_SIMPLEX, 0.65, (200, 200, 200), 1
+        )
+        
         uptime = time.time() - (self.bot.start_time if hasattr(self.bot, 'start_time') else time.time())
-        uptime_text = f"Uptime: {int(uptime)}s"
         cv2.putText(
-            frame, uptime_text, (10, 135),
-            cv2.FONT_HERSHEY_SIMPLEX, 0.8, (200, 200, 200), 1
+            frame, f"Uptime: {int(uptime)}s", (10, 132),
+            cv2.FONT_HERSHEY_SIMPLEX, 0.65, (200, 200, 200), 1
         )
         
-        # Подсказка
         cv2.putText(
             frame, "ESC - Close", (10, 170),
             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (100, 100, 100), 1

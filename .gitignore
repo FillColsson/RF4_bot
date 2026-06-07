@@ -19,6 +19,9 @@ logs/
 screenshots/
 captures/
 temp/
+training_samples/
+catch_samples/
+vision_profile.json
 
 # ==================== VS Code ====================
 .vscode/
